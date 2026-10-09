@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>그래프 빌더 사용 설명서</title>
+<meta name="description" content="엑셀 표를 끌어다 놓아 그래프를 만드는 그래프 빌더의 사용법을 그림으로 설명합니다. 주소 열기, 즐겨찾기, 새 버전 알림, 첫 그래프 만들기.">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<!-- Pretendard: 앱과 같은 가변 동적 서브셋 글꼴(같은 사이트에서 제공). 못 불러오면 아래 시스템 글꼴로 보입니다. -->
+<link rel="stylesheet" href="fonts/pretendardvariable-dynamic-subset.css">
+<style>
+:root {
+  color-scheme: light;
+  --ink: #1b2130;
+  --muted: #566074;
+  --line: #dde2ea;
+  --bg: #ffffff;
+  --soft: #f5f7fb;
+  --accent: #4660e8;
+  --accent-ink: #2f46c4;
+  --accent-soft: #eaeefe;
+  --red: #d92d28;
+  --red-soft: #fdecec;
+  --ok: #0c7a55;
+  --ok-soft: #e6f6ef;
+  --warn: #8a5200;
+  --warn-soft: #fff4de;
+  --font: 'Pretendard Variable', Pretendard, -apple-system, 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, 'Malgun Gothic', monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--soft); color: var(--ink);
+  font-family: var(--font); font-size: 16px; line-height: 1.75; word-break: keep-all; overflow-wrap: break-word;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.page { max-width: 900px; margin: 0 auto; padding: 0 16px 48px; }
+a { color: var(--accent-ink); }
+img, svg { max-width: 100%; height: auto; }
+code, kbd, .k {
+  font-family: var(--mono); font-size: .88em; background: var(--accent-soft); color: var(--accent-ink);
+  padding: .08em .45em; border-radius: 6px; white-space: nowrap;
+}
+kbd { background: #fff; color: var(--ink); border: 1px solid #c4cad6; border-bottom-width: 2px; border-radius: 6px; padding: .05em .45em; font-size: .85em; }
+b.ui { font-weight: 700; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: .04em .4em; white-space: nowrap; }
+
+/* header */
+.hero { background: linear-gradient(135deg, #4660e8, #6a4fe0); color: #fff; margin: 0 -16px; padding: 40px 32px 34px; }
+.hero h1 { margin: 0 0 6px; font-size: 2rem; line-height: 1.25; letter-spacing: -.01em; }
+.hero p { margin: 0; opacity: .95; font-size: 1.05rem; }
+.hero .heroaddr { display: inline-block; margin-top: 14px; background: #fff; color: #2f46c4; font-family: var(--mono); font-weight: 700; font-size: 1rem; padding: 7px 16px; border-radius: 10px; text-decoration: none; word-break: break-all; }
+.hero .ver { display: inline-block; margin-top: 14px; font-size: .82rem; background: rgba(255,255,255,.18); border-radius: 99px; padding: 2px 12px; }
+.toc { background: #fff; border: 1px solid var(--line); border-radius: 14px; margin: 20px 0 0; padding: 14px 22px; }
+.toc h2 { margin: 0 0 4px; font-size: 1rem; border: 0; padding: 0; }
+.toc ol { margin: 0; padding-left: 1.3em; columns: 2; column-gap: 28px; }
+.toc li { break-inside: avoid; }
+
+/* sections */
+section.sec { background: #fff; border: 1px solid var(--line); border-radius: 16px; margin: 20px 0 0; padding: 26px 30px 28px; }
+h2 { margin: 0 0 12px; font-size: 1.5rem; line-height: 1.35; letter-spacing: -.01em; display: flex; gap: 12px; align-items: center; }
+h2 .no { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 1.05rem; display: inline-flex; align-items: center; justify-content: center; }
+h3 { margin: 26px 0 8px; font-size: 1.15rem; line-height: 1.4; break-after: avoid; }
+h3 .st { display: inline-block; background: var(--accent-soft); color: var(--accent-ink); border-radius: 8px; padding: 0 10px; margin-right: 8px; font-size: .92rem; }
+p { margin: 8px 0; }
+ul, ol { margin: 8px 0; padding-left: 1.4em; }
+li { margin: 4px 0; }
+.lead { font-size: 1.06rem; }
+
+figure { margin: 14px 0; break-inside: avoid; }
+figure img, figure svg { display: block; width: 100%; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+figure.noframe svg { border: 0; }
+figure.narrow { max-width: 620px; }
+figure.small { max-width: 440px; }
+figcaption { margin-top: 6px; font-size: .88rem; color: var(--muted); }
+figcaption .strip-note { display: block; margin-top: 2px; font-size: .84rem; }
+.legend { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px 20px; grid-template-columns: 1fr 1fr; }
+.legend li { display: flex; gap: 8px; align-items: baseline; margin: 0; font-size: .95rem; }
+.n { flex: none; display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 800; font-size: .8rem; line-height: 1; align-items: center; justify-content: center; transform: translateY(2px); }
+
+.box { border-radius: 12px; padding: 14px 18px; margin: 16px 0; break-inside: avoid; }
+.box > :first-child { margin-top: 0; }
+.box > :last-child { margin-bottom: 0; }
+.box.key { background: var(--ok-soft); border: 2px solid var(--ok); }
+.box.key strong.t { color: var(--ok); font-size: 1.1rem; }
+.box.tip { background: var(--accent-soft); border: 1px solid #c9d3fb; }
+.box.warn { background: var(--warn-soft); border: 1px solid #f0cf94; }
+.box .lbl { font-weight: 800; margin-right: 6px; }
+.box.warn .lbl { color: var(--warn); }
+.box.tip .lbl { color: var(--accent-ink); }
+
+.addr { display: block; text-decoration: none; font-family: var(--mono); font-size: 1.02rem; background: var(--soft); border: 2px dashed #aab6f2; border-radius: 10px; padding: 12px 16px; margin: 10px 0; word-break: break-all; color: var(--accent-ink); font-weight: 600; }
+
+.grid2 { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+.card { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px 14px; background: #fff; break-inside: avoid; }
+.card h4 { margin: 0 0 6px; font-size: 1rem; display: flex; gap: 8px; align-items: center; }
+.card h4 .n { transform: none; }
+.card p { margin: 6px 0; font-size: .96rem; }
+.card figure { margin: 8px 0 4px; }
+
+.step { border-top: 1px dashed var(--line); margin-top: 22px; padding-top: 2px; }
+.step:first-of-type { border-top: 0; margin-top: 8px; }
+.imgrow { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; align-items: start; }
+.imgrow figure { margin: 8px 0; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: .96rem; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border: 1px solid var(--line); }
+th { background: var(--soft); white-space: nowrap; }
+tbody th { background: #fff; width: 27%; white-space: normal; }
+tr { break-inside: avoid; }
+
+.contact { background: var(--accent-soft); border-radius: 12px; padding: 14px 18px; margin-top: 14px; font-weight: 600; }
+footer.foot { text-align: center; color: var(--muted); font-size: .9rem; margin: 26px 0 0; }
+
+/* svg helpers (diagrams) */
+.sv-bg { fill: #fff; }
+.sv-line { stroke: #b9c1d0; stroke-width: 2; fill: none; }
+.sv-soft { fill: #f1f4fa; }
+.sv-accent { fill: var(--accent); }
+.sv-ink { fill: var(--ink); }
+.sv-muted { fill: var(--muted); }
+.sv-red { fill: var(--red); }
+.sv-redline { stroke: var(--red); stroke-width: 4; fill: none; stroke-linecap: round; }
+.sv-t { font-family: var(--font); font-size: 15px; fill: var(--ink); }
+.sv-tb { font-family: var(--font); font-size: 15px; font-weight: 700; fill: var(--ink); }
+.sv-ts { font-family: var(--font); font-size: 12.5px; fill: var(--muted); }
+.sv-m { font-family: var(--mono); font-size: 13px; fill: var(--ink); }
+.sv-w { font-family: var(--font); font-size: 15px; font-weight: 700; fill: #fff; }
+
+/* narrow screens */
+@media (max-width: 720px) {
+  body { font-size: 15.5px; }
+  .hero { padding: 30px 20px 26px; }
+  .hero h1 { font-size: 1.6rem; }
+  section.sec { padding: 20px 16px 22px; }
+  h2 { font-size: 1.28rem; }
+  .toc ol { columns: 1; }
+  .grid2, .imgrow, .legend { grid-template-columns: 1fr; }
+  table, thead, tbody, tr, th, td { display: block; }
+  thead { display: none; }
+  tr { border: 1px solid var(--line); border-radius: 10px; margin: 10px 0; overflow: hidden; }
+  th, td { border: 0; }
+  tbody th { background: var(--soft); width: auto; }
+}
+
+/* print: A4 portrait */
+@page { size: A4 portrait; margin: 14mm 14mm 16mm; }
+@media print {
+  body { background: #fff; font-size: 10.5pt; line-height: 1.65; }
+  .page { max-width: none; padding: 0; }
+  .hero { margin: 0; border-radius: 12px; padding: 22px 24px 18px; }
+  .hero h1 { font-size: 22pt; }
+  .toc { margin-top: 12px; }
+  section.sec { border: 0; border-radius: 0; padding: 0; margin: 0; }
+  section.sec.pb { break-before: page; }
+  section.sec + section.sec:not(.pb) { margin-top: 18px; }
+  h2 { font-size: 16pt; break-after: avoid; }
+  h3 { break-after: avoid; }
+  figure, .box, .card, tr, .step > h3 + p { break-inside: avoid; }
+  a { color: inherit; text-decoration: none; }
+  .legend li { font-size: 9.5pt; }
+  figure img { width: auto; max-width: 100%; max-height: 98mm; }
+  figure.noframe svg { max-height: 62mm; }
+  #s1 figure img { max-height: 62mm; }
+  #s1 figure.noframe svg { max-height: 46mm; }
+  .hero .ver { margin-top: 8px; }
+  .toc { padding: 8px 16px; }
+  .box.key p { margin: 4px 0; }
+  .legend { break-inside: avoid; }
+  .legend { margin-top: 6px; }
+  .grid2, .imgrow { display: block; font-size: 0; }
+  .grid2 > .card, .imgrow > figure { display: inline-block; vertical-align: top; width: 49%; font-size: 10.5pt; margin-right: 1%; margin-bottom: 8px; }
+  .imgrow > figure img { max-height: 90mm; }
+  .card { padding: 8px 10px 10px; }
+  .box { padding: 10px 14px; margin: 12px 0; }
+  .step { margin-top: 14px; }
+  h3 { margin-top: 18px; }
+  table { font-size: 9.5pt; }
+  th, td { padding: 6px 8px; }
+  .no-print { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="hero">
+  <h1>그래프 빌더 사용 설명서</h1>
+  <p>엑셀 표를 끌어다 놓아 그래프를 만드는 방법 — 주소 열기부터 첫 그래프까지</p>
+  <a class="heroaddr" href="https://forrestgump3210-wq.github.io/graphbuilder_yk/">https://forrestgump3210-wq.github.io/graphbuilder_yk/</a><br>
+  <span class="ver">v1.45 · 2026-10-05 기준</span>
+</header>
+
+<nav class="toc" aria-label="차례">
+  <h2>차례</h2>
+  <ol>
+    <li><a href="#s1">이게 뭔가요</a></li>
+    <li><a href="#s2">주소만 열면 시작돼요</a></li>
+    <li><a href="#s3">첫 그래프 만들기 (3분)</a></li>
+    <li><a href="#s4">자주 쓰는 다음 단계</a></li>
+    <li><a href="#s5">내 데이터는 어디에 저장되나요</a></li>
+    <li><a href="#s6">문제가 있을 때</a></li>
+    <li><a href="#sa">부록: 오프라인·사내 PC에서 직접 실행하기</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ 1 -->
+<section class="sec" id="s1">
+  <h2><span class="no">1</span>이게 뭔가요</h2>
+  <p class="lead">그래프 빌더는 <b>엑셀 표를 끌어다 놓아 그래프를 만드는</b> 웹 프로그램입니다. 주소만 열면 바로 쓸 수 있어요. 열 이름을 칸에 끌어다 놓기만 하면 상자 그림·점·선·막대 그래프가 그려집니다. 엑셀을 쓸 줄 알면 3분 안에 첫 그래프를 만들 수 있습니다.</p>
+
+  <div class="box key">
+    <p><strong class="t">설치 없음 · 데이터는 밖으로 나가지 않아요</strong></p>
+    <p>데이터는 <b>내 컴퓨터의 브라우저 안에서만 처리</b>되고, <b>서버로 전송되지 않습니다.</b> 파일을 어디에 올리는 것이 아니라서 사내 데이터도 안심하고 쓸 수 있습니다.</p>
+  </div>
+
+  <figure class="noframe" role="group" aria-labelledby="cap-priv">
+    <svg viewBox="0 0 800 230" role="img" aria-label="엑셀 표가 내 컴퓨터의 브라우저 안 그래프 빌더에서 그래프가 되고, 서버로는 전송되지 않는다는 그림">
+      <rect x="1" y="1" width="798" height="228" rx="14" class="sv-bg" stroke="#dde2ea" stroke-width="2"/>
+      <!-- excel -->
+      <g transform="translate(34,56)">
+        <rect width="150" height="112" rx="8" fill="#fff" stroke="#9fb4a8" stroke-width="2"/>
+        <rect width="150" height="26" rx="8" fill="#1f8f5f"/>
+        <rect y="14" width="150" height="12" fill="#1f8f5f"/>
+        <text x="12" y="19" class="sv-w" style="font-size:13px">엑셀 표</text>
+        <g stroke="#cfd8d3" stroke-width="1.5"><path d="M0 52H150M0 78H150M50 26V112M100 26V112"/></g>
+        <text x="8" y="44" class="sv-ts">LOT</text><text x="58" y="44" class="sv-ts">주체</text><text x="108" y="44" class="sv-ts">경도</text>
+        <text x="8" y="70" class="sv-ts">A</text><text x="58" y="70" class="sv-ts">CM</text><text x="108" y="70" class="sv-ts">65.1</text>
+        <text x="8" y="96" class="sv-ts">B</text><text x="58" y="96" class="sv-ts">HB</text><text x="108" y="96" class="sv-ts">68.3</text>
+      </g>
+      <!-- arrow 1 -->
+      <path d="M196 112H262" class="sv-line" style="stroke:#4660e8;stroke-width:4"/><path d="M262 112l-12-9v18z" fill="#4660e8"/>
+      <text x="229" y="92" text-anchor="middle" class="sv-ts">끌어 놓기</text><text x="229" y="134" text-anchor="middle" class="sv-ts">붙여넣기</text>
+      <!-- computer/browser -->
+      <g transform="translate(272,28)">
+        <rect width="262" height="170" rx="14" fill="var(--accent-soft)" stroke="#4660e8" stroke-width="3"/>
+        <text x="131" y="30" text-anchor="middle" class="sv-tb">내 컴퓨터 · 브라우저 안</text>
+        <rect x="22" y="44" width="218" height="104" rx="10" fill="#fff" stroke="#c9d3fb" stroke-width="2"/>
+        <text x="34" y="66" class="sv-ts">그래프 빌더</text>
+        <g transform="translate(50,72)" stroke="#4660e8" stroke-width="2.5" fill="#d3dafc">
+          <rect x="6" y="14" width="26" height="30"/><path d="M19 4V14M19 44V54" fill="none"/>
+          <rect x="60" y="6" width="26" height="30" stroke="#e5605c" fill="#fbd3d1"/><path d="M73 -2V6M73 36V46" fill="none" stroke="#e5605c"/>
+          <rect x="114" y="22" width="26" height="22"/><path d="M127 12V22M127 44V52" fill="none"/>
+        </g>
+      </g>
+      <!-- arrow 2 -->
+      <path d="M546 112H612" class="sv-line" style="stroke:#4660e8;stroke-width:4"/><path d="M612 112l-12-9v18z" fill="#4660e8"/>
+      <!-- result -->
+      <g transform="translate(626,62)">
+        <rect width="140" height="100" rx="10" fill="#fff" stroke="#9aa5ba" stroke-width="2"/>
+        <path d="M18 80H122M18 80V16" stroke="#9aa5ba" stroke-width="2" fill="none"/>
+        <g stroke="#4660e8" stroke-width="2.5" fill="#d3dafc"><rect x="32" y="38" width="22" height="30"/><rect x="70" y="26" width="22" height="30" stroke="#e5605c" fill="#fbd3d1"/><rect x="104" y="44" width="0" height="0"/></g>
+        <text x="70" y="118" text-anchor="middle" class="sv-tb">그래프</text>
+      </g>
+      <!-- no server -->
+      <g transform="translate(588,8)">
+        <path d="M24 30c-10 0-16-7-16-14S14 2 23 3c3-8 18-9 23 0 9-2 17 4 17 12 0 8-6 15-16 15z" fill="#eef1f6" stroke="#b9c1d0" stroke-width="2"/>
+        <path d="M2 0L70 38" class="sv-redline"/><path d="M70 0L2 38" class="sv-redline"/>
+      </g>
+      <text x="668" y="34" class="sv-tb" style="fill:#d92d28">서버로 전송 없음</text>
+    </svg>
+    <figcaption id="cap-priv">표는 내 브라우저 안에서만 그래프가 됩니다. 인터넷 서버로 보내지 않아요.</figcaption>
+  </figure>
+
+  <figure role="group" aria-labelledby="cap-overview">
+    <img style="max-width:1440px" src="img/01-overview.png" width="1440" height="900" alt="그래프 빌더 화면. 왼쪽에 열 목록(1), 위쪽에 그래프 모양 아이콘(2), 그래프 주변에 열을 놓는 칸(3), 가운데 그래프(4), 오른쪽에 설정 패널(5)이 번호로 표시되어 있다.">
+    <figcaption id="cap-overview">화면 구성 — 빨간 번호가 아래 설명과 같아요. <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+  </figure>
+  <ul class="legend">
+      <li><span class="n">1</span><span><b>열 목록</b> — 내 표의 열 이름이 모여 있어요.</span></li>
+      <li><span class="n">2</span><span><b>그래프 모양</b> — 점·상자 그림·선·막대 등을 고르는 아이콘이에요.</span></li>
+      <li><span class="n">3</span><span><b>열을 놓는 칸</b> — 열 이름을 끌어다 놓는 곳이에요(X, Y, 중첩, 색 등).</span></li>
+      <li><span class="n">4</span><span><b>그래프</b> — 결과가 바로 그려져요.</span></li>
+      <li><span class="n">5</span><span><b>설정 패널</b> — 고른 그래프 모양의 세부 설정이 있어요.</span></li>
+    </ul>
+
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="sec" id="s2">
+  <h2><span class="no">2</span>주소만 열면 시작돼요</h2>
+  <p class="lead">설치할 것도, 내려받을 것도 없어요. <b>인터넷 브라우저에서 아래 주소를 여는 것</b>이 전부입니다.</p>
+  <a class="addr" href="https://forrestgump3210-wq.github.io/graphbuilder_yk/">https://forrestgump3210-wq.github.io/graphbuilder_yk/</a>
+
+  <div class="step">
+    <h3><span class="st">①</span>주소 열기</h3>
+    <ol>
+      <li><b>Chrome</b>이나 <b>Edge</b>를 엽니다. (이 두 브라우저에서 가장 잘 동작해요.)</li>
+      <li>주소창에 위 주소를 입력하고 <kbd>Enter</kbd>를 누릅니다. 메신저로 받았다면 주소를 클릭해도 열려요.</li>
+    </ol>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">②</span>즐겨찾기에 넣기</h3>
+    <p>자주 쓰려면 <b>즐겨찾기</b>에 넣어 두세요. 주소창 오른쪽 별(★)을 클릭하거나 <kbd>Ctrl</kbd>+<kbd>D</kbd> (Mac은 <kbd>⌘</kbd>+<kbd>D</kbd>)를 누릅니다. 그다음부터는 즐겨찾기에서 클릭 한 번으로 열려요.</p>
+    <figure class="noframe" role="group" aria-labelledby="cap-addr">
+    <svg viewBox="0 0 800 150" role="img" aria-label="브라우저 주소창에 주소를 입력하고 오른쪽 별 모양 즐겨찾기 단추를 누르는 그림">
+      <rect x="1" y="1" width="798" height="148" rx="14" class="sv-bg" stroke="#dde2ea" stroke-width="2"/>
+      <rect x="20" y="22" width="760" height="58" rx="12" fill="#eef1f6"/>
+      <circle cx="46" cy="51" r="6" fill="#ff6b62"/><circle cx="68" cy="51" r="6" fill="#ffc247"/><circle cx="90" cy="51" r="6" fill="#3fc558"/>
+      <rect x="116" y="34" width="620" height="34" rx="17" fill="#fff" stroke="#c4cad6" stroke-width="2"/>
+      <text x="138" y="57" class="sv-m" style="font-size:15px">https://forrestgump3210-wq.github.io/graphbuilder_yk/</text>
+      <path d="M714 41l4.2 8.6 9.5 1.4-6.9 6.7 1.6 9.4-8.4-4.4-8.5 4.4 1.7-9.4-6.9-6.7 9.5-1.4z" fill="#ffc247" stroke="#c98a00" stroke-width="1.5"/>
+      <g transform="translate(694,34)"><circle r="14" class="sv-red" stroke="#fff" stroke-width="3"/><text y="5.5" text-anchor="middle" class="sv-w" style="font-size:15px">2</text></g>
+      <g transform="translate(116,28)"><circle r="14" class="sv-red" stroke="#fff" stroke-width="3"/><text y="5.5" text-anchor="middle" class="sv-w" style="font-size:15px">1</text></g>
+      <text x="20" y="116" class="sv-t"><tspan class="sv-tb" style="fill:#d92d28">1</tspan> 주소를 입력하고 Enter　　<tspan class="sv-tb" style="fill:#d92d28">2</tspan> 별(★) 클릭 또는 Ctrl + D → 즐겨찾기 완료</text>
+      <text x="20" y="138" class="sv-ts">그다음부터는 즐겨찾기에서 클릭 한 번으로 열려요.</text>
+    </svg>
+    <figcaption id="cap-addr">주소창에 입력하고, 별(★)로 즐겨찾기에 넣기</figcaption>
+  </figure>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">③</span>데이터 붙여넣기 · 열기</h3>
+    <p>처음 화면의 <b>데이터 열기</b> 카드에 <b>CSV나 엑셀 파일을 끌어다 놓거나</b>, 엑셀에서 복사한 표를 <b class="ui">붙여넣기</b>로 넣습니다. 연습만 해 보고 싶다면 <b class="ui">샘플 사용</b>을 클릭하세요. 자세한 순서는 <a href="#s3">3. 첫 그래프 만들기</a>에 그림과 함께 있어요.</p>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">④</span>데이터를 다시 꺼내기 — 데이터 복사</h3>
+    <p>그래프 빌더에 넣은 표를 다른 곳으로 옮기고 싶으면 데이터 표 머리줄의 <b class="ui">복사…</b>를 누르세요. <b class="ui">데이터 복사</b> 창에서 <b class="ui">형식</b>을 고릅니다. <b class="ui">표 데이터 (탭 구분)</b>은 Excel·Google 시트에 칸마다 붙여넣을 때, <b class="ui">열 맞춤 텍스트</b>는 열 폭을 공백으로 맞춘 글을 메신저·메일·메모장에 붙일 때, <b class="ui">CSV 파일 내려받기</b>는 UTF-8 BOM의 CSV 파일로 받을 때 씁니다. 행은 전체, 선택한 행, 그래프에 쓰는 행 가운데 고를 수 있고, <b class="ui">제외한 행 빼기</b>는 기본으로 켜져 있어 제외한 행은 빠집니다. 열은 전체 또는 골라서, 머리글 포함과 숫자 표기(원본 그대로 / 소수점 자리 고정)도 정할 수 있고, 창의 미리보기에서 처음 5행을 확인한 뒤 복사하세요.</p>
+    <p>데이터 표에서 행을 선택한 채로 <kbd>Ctrl</kbd>+<kbd>C</kbd>(Mac은 <kbd>⌘</kbd>+<kbd>C</kbd>)를 누르면 창을 띄우지 않고 선택한 행이 표 데이터로 바로 복사돼요.</p>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">⑤</span>새 버전은 새로고침만</h3>
+    <p>그래프 빌더가 새로 나오면 화면 맨 위에 <b>알림 띠</b>가 나타나요. <span class="n">1</span> <b class="ui">새로고침</b>을 클릭하면 바로 최신 버전으로 바뀝니다. 다시 내려받거나 설치할 필요가 없어요. 지금은 바쁘다면 <span class="n">2</span> <b class="ui">나중에</b>를 클릭해 띠를 닫아 두세요. (브라우저를 닫을 때까지 다시 나오지 않아요.)</p>
+    <figure role="group" aria-labelledby="cap-upd">
+      <img style="max-width:1000px" src="img/18-update-banner.png" width="2000" height="170" alt="화면 맨 위의 새 버전 알림 띠. ‘새 버전이 있습니다’ 글과 ‘새로고침’ 단추(1), ‘나중에’ 단추(2)가 번호로 표시되어 있다.">
+      <figcaption id="cap-upd">새 버전 알림 띠 — <span class="n">1</span> 새로고침 <span class="n">2</span> 나중에</figcaption>
+    </figure>
+    <p>새로고침해도 <b>하던 표와 그래프는 그대로</b> 남아 있어요(5장 참고). 화면 왼쪽 위의 <b>v숫자</b>가 지금 쓰고 있는 버전이에요.</p>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">⑥</span>데이터는 내 브라우저에만 저장돼요</h3>
+    <p>붙여넣거나 연 데이터는 <b>서버로 전송되지 않고</b>, <b>내 컴퓨터의 브라우저 안에서만</b> 처리되고 저장돼요. 그래서 사내 데이터도 안심하고 쓸 수 있습니다. 대신 <b>다른 PC나 다른 브라우저에서는 보이지 않으니</b> 중요한 데이터는 원본 엑셀 파일을 보관하세요. 자세한 내용은 <a href="#s5">5. 내 데이터는 어디에 저장되나요</a>를 보세요.</p>
+    <div class="box warn"><span class="lbl">안 열리면</span>사내망에서 이 주소가 막혀 있으면(페이지가 안 뜨거나 “차단됨”이라고 나오면) 담당자에게 알려 주세요. 인터넷 없이 직접 실행하는 방법은 맨 뒤 <a href="#sa">부록</a>에 있어요.</div>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="sec pb" id="s3">
+  <h2><span class="no">3</span>첫 그래프 만들기 (3분)</h2>
+  <p>예제는 <b>LOT별 경도</b>를 상자 그림으로 그리는 거예요. 열 이름은 <code>LOT</code>, <code>주체</code>, <code>경도</code> 세 개입니다. (Mac에서는 <kbd>Ctrl</kbd> 대신 <kbd>⌘</kbd>을 누르세요.)</p>
+
+  <div class="step">
+    <h3><span class="st">1단계</span>데이터 열기</h3>
+    <figure role="group" aria-labelledby="cap-home">
+      <img style="max-width:830px" src="img/02-home.png" width="830" height="660" alt="처음 화면. 가운데 점선 카드 ‘데이터 열기’(1)에 파일을 끌어 놓을 수 있고, 카드 안 ‘붙여넣기’ 단추(2)와 위쪽 ‘⋯’ 더보기 단추(3)가 번호로 표시되어 있다.">
+      <figcaption id="cap-home">처음 화면 — <span class="n">1</span> 파일을 끌어 놓기 <span class="n">2</span> 붙여넣기 <span class="n">3</span> 더보기(샘플)</figcaption>
+    </figure>
+    <p>처음 화면에는 <b>데이터 열기</b> 카드가 보여요. <b>CSV나 엑셀 파일</b>은 카드 위로 끌어다 놓으면 열립니다. <b>엑셀에서 복사한 표</b>는 <b class="ui">붙여넣기</b>를 클릭하세요(다음 단계).</p>
+    <div class="box tip">
+      <p><span class="lbl">연습하고 싶다면</span>내 데이터 없이 써 보려면 카드의 <b class="ui">샘플 사용</b>을 클릭하세요. 위쪽 <b class="ui">⋯</b>(더보기) ▸ <b class="ui">샘플</b>도 같아요.</p>
+      <figure class="narrow" role="group" aria-labelledby="cap-more" style="margin-bottom:6px">
+        <img style="max-width:760px" src="img/03-more-menu.png" width="760" height="200" alt="위쪽 ‘⋯’ 더보기 단추를 누르면 열리는 메뉴. 맨 위 ‘샘플’ 항목이 번호 1로 표시되어 있다.">
+        <figcaption id="cap-more">⋯ 더보기 ▸ 샘플</figcaption>
+      </figure>
+      <p>샘플의 열 이름은 영어입니다. 아래 설명의 <code>LOT</code>은 <code>Lot</code>으로, <code>경도</code>는 <code>Thickness (nm)</code>로 바꿔서 따라 해 보세요.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">2단계</span>엑셀 표 붙여넣기</h3>
+    <figure class="noframe" role="group" aria-labelledby="cap-xl">
+      <svg viewBox="0 0 800 220" role="img" aria-label="엑셀에서 열 이름이 있는 셀 범위를 선택해 Ctrl+C로 복사하고, 그래프 빌더에서 Ctrl+V로 붙여넣는 그림">
+        <rect x="1" y="1" width="798" height="218" rx="14" class="sv-bg" stroke="#dde2ea" stroke-width="2"/>
+        <g transform="translate(30,30)">
+          <rect width="330" height="150" rx="8" fill="#fff" stroke="#9fb4a8" stroke-width="2"/>
+          <rect width="330" height="26" rx="8" fill="#1f8f5f"/><rect y="14" width="330" height="12" fill="#1f8f5f"/>
+          <text x="12" y="19" class="sv-w" style="font-size:13px">엑셀</text>
+          <g stroke="#d6ddd9" stroke-width="1.5"><path d="M0 56H330M0 86H330M0 116H330M110 26V150M220 26V150"/></g>
+          <rect x="1" y="30" width="328" height="116" fill="rgba(31,143,95,.10)"/>
+          <rect x="1" y="30" width="328" height="116" fill="none" stroke="#1f8f5f" stroke-width="3" stroke-dasharray="7 5"/>
+          <g class="sv-t" style="font-size:14px"><text x="12" y="49" class="sv-tb" style="font-size:14px">LOT</text><text x="122" y="49" class="sv-tb" style="font-size:14px">주체</text><text x="232" y="49" class="sv-tb" style="font-size:14px">경도</text>
+          <text x="12" y="78">LOT-01</text><text x="122" y="78">CM</text><text x="232" y="78">69.4</text>
+          <text x="12" y="108">LOT-01</text><text x="122" y="108">CM</text><text x="232" y="108">64.9</text>
+          <text x="12" y="138">LOT-02</text><text x="122" y="138">HB</text><text x="232" y="138">71.2</text></g>
+        </g>
+        <g transform="translate(372,72)"><rect width="76" height="34" rx="8" fill="#fff" stroke="#c4cad6" stroke-width="2"/><rect y="28" width="76" height="6" rx="3" fill="#c4cad6" opacity=".7"/><text x="38" y="23" text-anchor="middle" class="sv-m" style="font-size:13px;font-weight:700">Ctrl+C</text></g>
+        <path d="M454 90H520" class="sv-line" style="stroke:#4660e8;stroke-width:4"/><path d="M520 90l-12-9v18z" fill="#4660e8"/>
+        <g transform="translate(372,122)"><rect width="76" height="34" rx="8" fill="#fff" stroke="#c4cad6" stroke-width="2"/><rect y="28" width="76" height="6" rx="3" fill="#c4cad6" opacity=".7"/><text x="38" y="23" text-anchor="middle" class="sv-m" style="font-size:13px;font-weight:700">Ctrl+V</text></g>
+        <g transform="translate(540,30)">
+          <rect width="236" height="150" rx="10" fill="#fff" stroke="#9aa5ba" stroke-width="2.5"/>
+          <rect width="236" height="26" rx="10" fill="#eef1f6"/><rect y="14" width="236" height="12" fill="#eef1f6"/>
+          <text x="12" y="18" class="sv-ts" style="font-size:12px">그래프 빌더</text>
+          <rect x="22" y="44" width="192" height="76" rx="8" fill="#fff" stroke="#c9d3fb" stroke-width="2.5" stroke-dasharray="6 4"/>
+          <text x="118" y="78" text-anchor="middle" class="sv-tb">데이터 붙여넣기</text>
+          <text x="118" y="100" text-anchor="middle" class="sv-ts">표가 자동으로 들어와요</text>
+        </g>
+        <text x="30" y="204" class="sv-t" style="font-size:14px"><tspan class="sv-tb" style="font-size:14px">열 이름 줄까지</tspan> 함께 선택해서 복사하세요.</text>
+      </svg>
+      <figcaption id="cap-xl">엑셀에서 열 이름이 있는 줄부터 선택 ▸ <kbd>Ctrl</kbd>+<kbd>C</kbd> ▸ 그래프 빌더에서 <kbd>Ctrl</kbd>+<kbd>V</kbd></figcaption>
+    </figure>
+    <p>엑셀에서 <b>열 이름이 있는 줄부터</b> 표를 드래그해 선택하고 <kbd>Ctrl</kbd>+<kbd>C</kbd>를 누릅니다. 그래프 빌더 화면 아무 곳이나 클릭한 뒤 <kbd>Ctrl</kbd>+<kbd>V</kbd>를 누르세요. (또는 <b class="ui">붙여넣기</b>를 클릭.)</p>
+    <figure role="group" aria-labelledby="cap-paste">
+      <img style="max-width:700px" src="img/04-paste.png" width="700" height="620" alt="‘데이터 붙여넣기’ 창. 위쪽 칸에 붙여넣은 표(1), 가운데 미리보기(2), 아래 ‘확인’ 단추(3)가 번호로 표시되어 있다.">
+      <figcaption id="cap-paste">붙여넣기 창 — <span class="n">1</span> 표가 들어간 칸 <span class="n">2</span> 미리보기 <span class="n">3</span> 확인</figcaption>
+    </figure>
+    <p><span class="n">2</span> <b>미리보기</b>에서 열 이름과 숫자가 맞는지 보고, <span class="n">3</span> <b class="ui">확인</b>을 클릭하면 끝입니다. 파일로 열 때처럼 CSV·엑셀 파일을 화면에 끌어 놓아도 됩니다.</p>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">3단계</span>열을 끌어서 Y와 X에 놓기</h3>
+    <p>왼쪽 <b>열</b> 목록에서 이름을 <b>마우스로 누른 채</b> 그래프 쪽으로 끌어 오면 놓을 자리가 <b>파랗게</b> 나타납니다. <b>Y</b>는 재고 싶은 숫자(세로축), <b>X</b>는 나눠서 볼 기준(가로축)이에요.</p>
+    <div>
+      <figure role="group" aria-labelledby="cap-dy">
+        <img style="max-width:1000px" src="img/05-drag-y.png" width="1000" height="610" alt="왼쪽 열 목록의 ‘경도’(1)를 그래프 왼쪽의 파란 Y 칸(2)으로 끌고 가는 장면. 화살표가 열 이름에서 Y 칸으로 향한다.">
+        <figcaption id="cap-dy"><span class="n">1</span> <code>경도</code>를 끌어서 <span class="n">2</span> <b>Y</b> 칸에 놓기 <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+      </figure>
+      <figure role="group" aria-labelledby="cap-dx">
+        <img style="max-width:1000px" src="img/06-drag-x.png" width="1000" height="610" alt="왼쪽 열 목록의 ‘LOT’(1)을 그래프 아래쪽의 파란 X 칸(2)으로 끌고 가는 장면. 곡선 화살표가 열 이름에서 X 칸으로 향한다.">
+        <figcaption id="cap-dx"><span class="n">1</span> <code>LOT</code>을 끌어서 <span class="n">2</span> <b>X</b> 칸에 놓기 <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+      </figure>
+    </div>
+    <p>놓으면 바로 점 그래프가 그려져요. 잘못 놓았으면 <kbd>Ctrl</kbd>+<kbd>Z</kbd>로 되돌립니다.</p>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">4단계</span>그래프 모양을 상자 그림으로 바꾸기</h3>
+    <figure role="group" aria-labelledby="cap-box">
+      <img style="max-width:740px" src="img/07-box.png" width="740" height="604" alt="위쪽 아이콘 줄에서 두 번째 ‘상자 그림’ 아이콘(1)을 선택하면 LOT별 경도가 상자 그림으로 바뀐 그래프.">
+      <figcaption id="cap-box"><span class="n">1</span> 위쪽 아이콘 줄에서 <b>상자 그림</b> 클릭 <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+    </figure>
+    <p>그래프 위쪽의 아이콘 줄에서 <b>두 번째 아이콘(상자 그림)</b>을 클릭합니다. 마우스를 올리면 이름이 나와요. 상자는 값의 <b>가운데 절반</b>, 상자 안의 굵은 선은 <b>가운데 값(중앙값)</b>, 위아래 선은 값이 퍼진 범위입니다.</p>
+  </div>
+
+  <div class="step">
+    <h3><span class="st">5단계</span>숫자 켜기 — 값 라벨</h3>
+    <figure role="group" aria-labelledby="cap-lab">
+      <img style="max-width:1190px" src="img/08-labels.png" width="1190" height="604" alt="오른쪽 설정 패널의 ‘값 라벨’ 스위치(1)를 켜자 상자마다 중앙값 숫자(2)가 그래프에 표시된 모습.">
+      <figcaption id="cap-lab"><span class="n">1</span> 오른쪽 <b>값 라벨</b>을 켜면 <span class="n">2</span> 상자마다 숫자가 적혀요 <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+    </figure>
+    <p>오른쪽 <b>요소</b> 패널 맨 위의 <b class="ui">값 라벨</b> 스위치를 클릭해 켭니다. 상자마다 <b>중앙값</b>이 숫자로 나타나요. 평균 등으로 바꾸려면 <b>라벨 통계</b>에서 다른 항목을 클릭하세요.</p>
+    <div class="box key"><p><strong class="t">완성!</strong> 이렇게 3분이면 첫 그래프가 나옵니다. 이제 아래 “다음 단계”에서 필요한 기능만 골라 쓰세요.</p></div>
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="sec pb" id="s4">
+  <h2><span class="no">4</span>자주 쓰는 다음 단계</h2>
+
+  <div class="card" style="margin-top:12px">
+    <h4><span class="n" style="background:var(--accent)">1</span>색으로 나누기</h4>
+    <p>나누고 싶은 열(예: <code>주체</code>)을 위쪽 <b>중첩</b> 칸으로 끌어 놓으면 색마다 상자가 나란히 그려지고 오른쪽에 색 설명(범례)이 생겨요. 점·선 그래프는 오른쪽 <b>색</b> 칸에 놓아도 됩니다.</p>
+    <figure role="group" aria-labelledby="cap-color" style="margin-bottom:0">
+      <img style="max-width:880px" src="img/09-color.png" width="880" height="604" alt="주체 열을 위쪽 ‘중첩’ 칸(1)에 놓자 CM은 파랑, HB는 빨강 상자가 나란히 그려지고 오른쪽에 범례(2)가 나타난 그래프.">
+      <figcaption id="cap-color"><span class="n">1</span> <b>중첩</b> 칸에 열을 놓으면 <span class="n">2</span> 색별로 나뉘어요 <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+    </figure>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4><span class="n" style="background:var(--accent)">2</span>규격 한계 넣기</h4>
+    <p>왼쪽 열 목록에서 <b>열 이름을 우클릭</b> ▸ <b class="ui">규격 한계…</b>를 클릭합니다. <b>규격 상한 (USL)</b>과 <b>규격 하한 (LSL)</b> 값을 적고 <b class="ui">확인</b>을 클릭하면 그래프에 <b>빨간 점선</b>이 그려집니다. (예: 상한 72, 하한 62)</p>
+    <div>
+      <figure class="small" role="group" aria-labelledby="cap-sm">
+        <img style="max-width:380px" src="img/10-spec-menu.png" width="380" height="400" alt="열 이름을 우클릭하면 나오는 메뉴. ‘규격 한계…’ 항목(1)이 표시되어 있다.">
+        <figcaption id="cap-sm"><span class="n">1</span> 열 우클릭 ▸ 규격 한계…</figcaption>
+      </figure>
+      <figure role="group" aria-labelledby="cap-sr" style="margin-bottom:0">
+        <img style="max-width:880px" src="img/11-spec-result.png" width="880" height="604" alt="규격 상한 72(1)와 규격 하한 62(2)가 빨간 점선으로, 목표값 67이 초록 실선으로 그려진 그래프.">
+        <figcaption id="cap-sr">그래프에 <span class="n">1</span> 상한선, <span class="n">2</span> 하한선이 생겨요 <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4><span class="n" style="background:var(--accent)">3</span>축 설정 (눈금 범위 바꾸기)</h4>
+    <p>축 이름 옆에 있는 <b>작은 설정 단추</b>를 클릭하면 <b>축 설정</b> 창이 열립니다. <b>최솟값·최댓값·증분</b>을 적으면 눈금 범위가 바뀌고, 비워 두면 자동이에요. (단추는 마우스를 올리면 진해집니다.)</p>
+    <p>같은 창의 <b>관리한계</b>를 켜면 그래프가 그린 값의 평균과 ±3σ에서 계산한 <b>중심선(CL)·관리 상한(UCL)·관리 하한(LCL)</b>이 점선-점(보라색)으로 나타나요. 규격 한계(빨간 점선)와 달리 데이터에서 계산한 선이라 자료가 바뀌면 같이 움직이고, 눈금 범위를 넓히지는 않아요(범위 밖이면 창에서 알려 줍니다).</p>
+    <div class="imgrow">
+      <figure role="group" aria-labelledby="cap-ag" style="margin-bottom:0">
+        <img style="max-width:420px" src="img/12-axis-gear.png" width="420" height="500" alt="세로축 이름 ‘경도’ 옆과 가로축 이름 ‘LOT’ 옆의 작은 설정 단추(1)가 표시된 그래프 일부.">
+        <figcaption id="cap-ag"><span class="n">1</span> 축 이름 옆 설정 단추 <span class="strip-note">※ v1.72부터 그래프 띠는 없습니다(그림 아래쪽의 ‘그래프 1 · + 저장’ 줄은 이전 버전 화면).</span></figcaption>
+      </figure>
+      <figure role="group" aria-labelledby="cap-ad" style="margin-bottom:0">
+        <img style="max-width:480px" src="img/13-axis-dialog.png" width="480" height="620" alt="‘축 설정’ 창. 최솟값·최댓값·증분 입력칸(1)과 축 제목 입력칸(2)이 표시되어 있다.">
+        <figcaption id="cap-ad"><span class="n">1</span> 눈금 범위 <span class="n">2</span> 축 이름 바꾸기</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4><span class="n" style="background:var(--accent)">4</span>이미지 복사해서 PPT에 붙이기 · 인쇄</h4>
+    <p>위쪽 도구 줄의 단추(열기·붙여넣기·필터·데이터 테이블·이미지 복사·내보내기·완료 등)는 <b>아이콘만</b> 보여요. 마우스를 올리면 이름이 나오고, 이 안내서의 <b class="ui">굵은 이름</b>이 바로 그 이름입니다.</p>
+    <p><span class="n">1</span> <b class="ui">이미지 복사</b>(<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>C</kbd>)를 클릭한 뒤 PPT나 메일에서 <kbd>Ctrl</kbd>+<kbd>V</kbd>를 누르면 그래프가 그림으로 붙습니다. <span class="n">2</span> 프린터 아이콘(<kbd>Ctrl</kbd>+<kbd>P</kbd>)은 그래프만 인쇄하며, 인쇄 창에서 “PDF로 저장”을 고르면 PDF 파일이 돼요.</p>
+    <figure class="narrow" role="group" aria-labelledby="cap-tb" style="margin-bottom:0">
+      <img style="max-width:620px" src="img/14-toolbar.png" width="620" height="100" alt="위쪽 도구 줄. 이미지 복사(1), 인쇄 아이콘(2), 완료(3) 단추가 번호로 표시되어 있다.">
+      <figcaption id="cap-tb"><span class="n">1</span> 이미지 복사 <span class="n">2</span> 인쇄 <span class="n">3</span> 완료</figcaption>
+    </figure>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4><span class="n" style="background:var(--accent)">5</span>완료 버튼으로 깔끔하게 보기</h4>
+    <p>오른쪽 위 <b class="ui">완료</b>(위 그림 <span class="n">3</span>)를 클릭하면 패널이 사라지고 <b>그래프만 크게</b> 보여요. 화면을 캡처하거나 회의에서 보여 줄 때 좋습니다. 다시 고치려면 같은 자리의 <b class="ui">편집</b>을 클릭하세요.</p>
+    <figure class="narrow" role="group" aria-labelledby="cap-done" style="margin-bottom:0">
+      <img style="max-width:1440px" src="img/15-done.png" width="1440" height="900" alt="완료 화면. 설정 패널과 열 목록이 사라지고 그래프만 크게 보이며, 오른쪽 위 ‘편집’ 단추(1)로 다시 편집할 수 있다.">
+      <figcaption id="cap-done">완료 화면 — <span class="n">1</span> 편집을 클릭하면 돌아가요</figcaption>
+    </figure>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4><span class="n" style="background:var(--accent)">6</span>분석 — 숫자와 쉬운 말 진단</h4>
+    <p>분석할 열을 <b>Y</b>에, 로트 같은 그룹 열을 <b>X</b>에 놓고 규격 한계(위 2번)를 넣은 다음, 오른쪽 설정 패널 맨 아래 <b class="ui">분석</b> 섹션에서 원하는 분석을 켜 보세요. 그래프 아래에 <b>표와 진단</b>이 나타납니다. 진단은 숫자만 늘어놓지 않고 “공정능력 부족 (Cpk 0.57 &lt; 1.0)”, “평균이 규격 중심에서 치우침” 같이 <b>이유를 쉬운 말로</b> 알려 줍니다(정해진 규칙으로 만든 1차 안내). 그룹 이름을 클릭하면 그 그룹의 진단을 볼 수 있고, <b class="ui">표 복사</b>로 엑셀에 붙여 넣을 수 있습니다.</p>
+    <ul>
+      <li><b>분포 요약·정규성 검정</b> — 히스토그램의 짝. 평균·σ·중앙값·왜도·이상치를 표로 보이고, Shapiro–Wilk·Anderson–Darling 정규성 검정 결과를 함께 보여 줍니다. 검정을 통과했다고 정규분포가 증명되는 것은 아니에요. 히스토그램 요소의 정규곡선·Y 단위(빈도·비율·밀도)·구간 방식(자동·구간 수·구간 폭)도 같이 조절할 수 있습니다. 정규성을 눈으로 확인하고 싶다면 요소 줄의 <b class="ui">Q–Q 플롯</b>을 켜 보세요 — 점이 직선을 따르면 정규분포에 가깝고, 양 끝이 휘면 꼬리가 두껍거나 한쪽으로 치우친 신호입니다(95% 신뢰대·로그 Y축 옵션, 검증 데이터의 <b class="ui">Q–Q 예제</b>).</li>
+      <li><b>공정능력 Cp/Cpk</b> — 규격 한계가 필요합니다(위 2번). <b class="ui">변환/방법</b>에서 없음·로그(log₁₀)·Box-Cox·비정규(분위수법)를 선택할 수 있습니다. 치우친 데이터는 로그나 Box-Cox로 바꿔 평가하고, 분포를 가정하지 않는 비정규(분위수법)도 고를 수 있으며, 변환한 지수는 변환하지 않은 Cpk와 비교할 수 없고 분위수법은 Pp/Ppk만 냅니다. 단절 열과 하위군도 지원합니다.</li>
+      <li><b>상관·상관 행렬</b> — X·Y가 모두 연속형일 때. r·ρ·p·95% 신뢰구간을 보여 줍니다. 상관은 인과가 아니라는 점을 매번 알려 줍니다. 연속형 열이 여러 개면 상관 행렬로 쌍을 한 행렬과 쌍별 목록으로 봅니다(다중검정 보정 Holm). v1.72부터 쌍마다 산점도를 대시보드로 모으는 “산점도 행렬 대시보드 만들기” 단추는 없습니다.</li>
+      <li><b>분산분석·t검정·순위 검정</b> — X가 범주형(로트 같은 그룹), Y가 연속형일 때. 그룹별 평균·SD·95% 신뢰구간과 사후 비교를 보여 줍니다. 분산이 다르면 자동으로 Welch 방법으로 바뀝니다. 그룹이 정확히 2개면 t검정이 되고, 같은 대상을 두 번 쟀다면 대응 ID 열로 대응 t와 Wilcoxon 부호순위를 함께 봅니다. 단측 검정은 자료를 보기 전에 방향을 정할 때만 씁니다. Kruskal–Wallis·Wilcoxon 순위합 행이 항상 함께 나옵니다.</li>
+      <li><b>관리한계·관리도</b> — 축 설정 ▸ 관리한계에서 평균 ±3σ의 CL·UCL·LCL을 점선-점으로 나타냅니다(규격 한계와 다름; 로그 축에서는 <b class="ui">계산 척도</b>가 로그 값으로 계산해 하한이 0 아래로 사라지지 않습니다). 요소 줄의 관리도로 I-MR·X̄-R·X̄-S·CUSUM·EWMA·p·np·c·u를 고르고(CUSUM·EWMA는 작은 평균 이동을, p·np·c·u는 불량·결함 개수를 감시합니다), 규칙을 어긴 점을 빨강으로 강조하며, 기준 구간을 지정할 수 있습니다. 관리도 판정 문장이 자동으로 나타납니다. 앱은 한계를 임의로 계산하거나 점을 지우지 않으므로, “관리 상태로 보임”은 안정함의 증명이 아님을 알아 두세요.</li>
+      <li><b>그래프에 고정</b> — 분석 카드의 <b class="ui">그래프에 고정</b>을 요약/표로 바꾸면 같은 숫자와 진단이 그래프 아래에 새겨져 내보낸 이미지·인쇄물·대시보드 칸에도 나옵니다. 대시보드 ⋯ 메뉴의 <b class="ui">분석 캡션 표시</b>로 끌 수 있고, 칸이 좁으면 요약만, 칸이 낮으면 줄이고, 아주 작은 칸(3×3·4×4 대시보드)은 핵심 숫자 한 줄만 보입니다.</li>
+      <li><b>? 도움말</b> — 분석 제목·옵션·표 열 이름 옆의 작은 <b class="ui">?</b>에 마우스를 올리거나 <kbd>Tab</kbd>으로 이동하면 쉬운 말 설명과 통계 문서 절 번호가 뜹니다(<kbd>Esc</kbd>로 닫기, 터치는 눌러서 열고 닫기).</li>
+    </ul>
+    <p><b>진단 기준 설정</b> — 진단의 등급과 표현(Cpk 우수 1.67 / 양호 1.33 / 보통 1.00, 표본 크기 경고 10·30·100, 상관 강도 경계 0.2·0.4·0.7, 기본 α 0.05 등)은 업계 관례이지만 고객·회사가 정한 합격선이 우선합니다. <b class="ui">분석</b> 섹션 제목 오른쪽의 작은 톱니바퀴 단추를 누르면 “진단 기준 설정” 창이 열리고, 묶음별 초기화와 전체 초기화가 있으며 경계값이 오름차순(예: 1.00 &lt; 1.33 &lt; 1.67)이 아니면 단추가 꺼진 채로 이유가 표시됩니다. <b class="ui">이 그래프에 적용</b>은 값을 이 그래프와 함께 저장하고(사양 파일에도 들어갑니다), <b class="ui">앱 기본값으로 저장</b>은 같은 값을 새로 만드는 그래프의 기본값으로도 저장합니다. 바꾼 값이 적용 중이면 모든 분석의 방법 줄과 고정한 캡션에 “기준: 사용자 설정”이 표시됩니다. 기준을 바꿔도 계산된 숫자는 그대로이고 진단의 등급과 표현만 달라집니다.</p>
+    <p><b>숫자가 맞는지 직접 확인</b>해 보려면 ⋯ 메뉴 ▸ <b class="ui">검증 데이터</b>에서 R·NIST·Excel 도움말처럼 공개된 참조값이 있는 데이터를 열어 보세요. 분석이 켜진 그래프가 준비되어 화면의 값을 docs/statistics.md 3.7의 기대값과 바로 비교할 수 있습니다. ⋯ 메뉴 ▸ 검증 데이터 ▸ <b class="ui">관리도 예제</b>와 <b class="ui">CUSUM/EWMA 예제</b>·<b class="ui">p 관리도 예제</b>·<b class="ui">c 관리도 예제</b>도 참고하세요.</p>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h4><span class="n" style="background:var(--accent)">7</span>Y 항목을 나눠 보기 — 대시보드</h4>
+    <p>Y 칸에 열을 <b>2개 이상</b> 쌓았을 때 위쪽 도구 줄의 <b class="ui">대시보드</b>(격자 아이콘)를 클릭하면, Y 항목마다 <b>한 칸씩</b> 나눠 한 화면에 모아 보여 줘요(4개면 2×2). 칸은 편집 중인 그래프를 그대로 따라가요. 고치려면 칸의 <b class="ui">⋯</b> 메뉴 ▸ <b class="ui">원본 그래프 편집</b>(칸을 더블클릭해도 같아요)으로 편집기에 돌아가 그래프를 고친 뒤 다시 <b class="ui">대시보드</b>를 클릭하면 모든 칸에 반영돼 있어요. Y가 하나뿐이면 이 단추가 흐리게 보이고, 누르면 “Y 항목이 2개 이상일 때 쓸 수 있습니다”라는 안내만 나와요. 한 테이블에는 그래프도, 대시보드도 하나씩이에요(v1.72부터).</p>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="sec" id="s5">
+  <h2><span class="no">5</span>내 데이터는 어디에 저장되나요</h2>
+  <ul>
+    <li><b>브라우저가 기억해요.</b> 새로고침하거나 창을 닫았다 다시 열어도 하던 표와 그래프가 그대로 나옵니다.</li>
+    <li><b>이 컴퓨터의 이 브라우저에서만 보여요.</b> 다른 PC, 다른 브라우저, 시크릿(비공개) 창에서는 보이지 않습니다. 같은 컴퓨터라도 열어 본 주소가 다르면(예: 부록의 직접 실행) 저장 공간이 따로예요.</li>
+    <li><b>브라우저 데이터를 지우면 사라져요.</b> 인터넷 사용 기록·사이트 데이터를 지울 때 함께 지워집니다. <b>중요한 데이터는 원본 엑셀 파일을 꼭 보관하세요.</b></li>
+    <li><b>그래프 설정만 파일로 저장</b>할 수 있어요. 위쪽 <b class="ui">내보내기</b> ▸ <b class="ui">사양 저장</b>을 클릭하면 <code>.gbx.json</code> 파일이 내려받아집니다(데이터는 들어 있지 않고 그래프 설정만 들어 있어요). 같은 열이 있는 표를 연 뒤 <b class="ui">내보내기</b> ▸ <b class="ui">사양 로드</b>로 다시 불러옵니다.</li>
+  </ul>
+  <figure class="narrow" role="group" aria-labelledby="cap-exp">
+    <img style="max-width:600px" src="img/16-export-menu.png" width="600" height="260" alt="위쪽 ‘내보내기’ 단추(1)를 누르면 열리는 메뉴. 아래쪽 ‘사양 저장’ 항목(2)이 표시되어 있다.">
+    <figcaption id="cap-exp"><span class="n">1</span> 내보내기 ▸ <span class="n">2</span> 사양 저장</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="sec" id="s6">
+  <h2><span class="no">6</span>문제가 있을 때</h2>
+  <table>
+    <thead><tr><th scope="col">이럴 때</th><th scope="col">이렇게 해 보세요</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">화면이 하얗게 비어요</th><td><kbd>F5</kbd>로 새로고침하세요. 그래도 안 되면 <b>Chrome</b>이나 <b>Edge</b>로 열어 보세요.</td></tr>
+      <tr><th scope="row">붙여넣기가 안 돼요</th><td>엑셀에서 <b>셀 범위를 선택하고 <kbd>Ctrl</kbd>+<kbd>C</kbd></b>를 누른 뒤(선택 둘레에 점선이 움직여야 해요), 그래프 빌더 화면을 한 번 클릭하고 <kbd>Ctrl</kbd>+<kbd>V</kbd>를 누르세요. 그래도 안 되면 <b class="ui">붙여넣기</b>를 클릭하고 나온 칸 안에서 <kbd>Ctrl</kbd>+<kbd>V</kbd>를 누르세요.</td></tr>
+      <tr><th scope="row">숫자가 글자로 들어와요<br><span style="font-weight:400;color:var(--muted);font-size:.9em">(그래프가 이상하게 나뉘어요)</span></th><td>왼쪽 열 목록에서 그 열을 <b>우클릭 ▸ 유형 변경</b>에서 <b class="ui">연속형</b>을 클릭하세요(열 이름 옆이 파란 삼각형이면 숫자예요). <b class="ui">연속형</b>이 흐려서 안 눌리면 그 열에 <code>12mm</code>, <code>N/A</code> 같은 글자가 섞여 있다는 뜻이에요. 엑셀에서 숫자만 남기고 다시 붙여넣으세요.
+        <figure class="small" role="group" aria-labelledby="cap-type" style="margin:10px 0 0">
+          <img style="max-width:380px" src="img/17-type-menu.png" width="380" height="400" alt="열 이름을 우클릭하면 나오는 메뉴. ‘유형 변경’ 아래 ‘연속형’ 항목(1)이 표시되어 있다.">
+          <figcaption id="cap-type"><span class="n">1</span> 우클릭 ▸ 유형 변경 ▸ 연속형</figcaption>
+        </figure></td></tr>
+      <tr><th scope="row">열이 칸에 안 놓여요</th><td><b>크기·빈도·구간</b> 칸에는 <b>숫자 열만</b> 놓을 수 있어요. 글자 열은 X, 중첩, 색 칸을 쓰세요.</td></tr>
+      <tr><th scope="row">이미지 복사가 안 돼요</th><td>“클립보드에 복사하지 못했습니다”가 나오면 <b class="ui">내보내기</b> ▸ <b class="ui">PNG 내보내기</b>로 파일로 저장한 뒤 PPT에 끼워 넣으세요.</td></tr>
+      <tr><th scope="row">어제 하던 게 안 보여요</th><td>다른 PC·다른 브라우저·시크릿 창이거나, 브라우저 기록을 지운 경우예요. 주소가 다르게 열린 경우(부록의 직접 실행 등)도 저장 공간이 따로입니다. 주소가 <b>https://forrestgump3210-wq.github.io/graphbuilder_yk/</b> 맞는지 확인하세요. (5. 참고)</td></tr>
+      <tr><th scope="row">“새 버전이 있습니다” 띠가 계속 나와요</th><td><b class="ui">새로고침</b>을 클릭해도 그대로라면 <kbd>Ctrl</kbd>+<kbd>F5</kbd> (Mac은 <kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>)로 강제 새로고침하세요. 그래도 같으면 담당자에게 알려 주세요.</td></tr>
+      <tr><th scope="row">화면이 예전 모양이에요</th><td>즐겨찾기로 열어도 보통은 항상 최신 버전이 열려요. 예전 모양이 보이면 <kbd>Ctrl</kbd>+<kbd>F5</kbd>로 강제 새로고침하세요.</td></tr>
+      <tr><th scope="row">사내망에서 주소가 안 열려요</th><td>담당자에게 알려 주세요. 맨 뒤 <a href="#sa">부록</a>의 직접 실행으로 시작할 수도 있습니다. 처음 한 번만 인터넷 연결이 필요해요.</td></tr>
+    </tbody>
+  </table>
+  <div class="contact">그래도 해결이 안 되면: <b>[담당자 이름/연락처]</b></div>
+</section>
+
+<!-- ============================================================ 부록 -->
+<section class="sec pb" id="sa">
+  <h2><span class="no">A</span>오프라인·사내 PC에서 직접 실행하기</h2>
+  <p>주소가 막힌 사내망이거나 인터넷이 없는 PC라면, <b>실행 폴더를 내 PC에 받아 직접 실행</b>할 수 있어요. 대신 <b>처음 한 번은 인터넷이 필요하고 1~3분</b> 걸립니다. 평소에는 앞의 “주소로 열기”가 훨씬 간단하니, 꼭 필요한 경우에만 쓰세요.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4><span class="n">1</span>실행 폴더(ZIP) 받기</h4>
+      <figure class="noframe">
+        <svg viewBox="0 0 320 190" role="img" aria-label="담당자에게서 그래프 빌더 ZIP 파일을 받아 내려받기 폴더에 저장하는 그림">
+          <rect x="1" y="1" width="318" height="188" rx="10" class="sv-bg" stroke="#dde2ea" stroke-width="2"/>
+          <g transform="translate(30,40)">
+            <circle cx="36" cy="22" r="20" fill="#d3dafc" stroke="#4660e8" stroke-width="3"/>
+            <path d="M4 100a32 32 0 0 1 64 0z" fill="#d3dafc" stroke="#4660e8" stroke-width="3"/>
+            <text x="36" y="128" text-anchor="middle" class="sv-tb" style="font-size:14px">담당자</text>
+          </g>
+          <path d="M118 84H186" class="sv-line" style="stroke:#4660e8;stroke-width:4"/><path d="M186 84l-12-9v18z" fill="#4660e8"/>
+          <text x="152" y="68" text-anchor="middle" class="sv-ts">전달</text>
+          <g transform="translate(212,40)">
+            <path d="M0 8a8 8 0 0 1 8-8h38l26 26v86a8 8 0 0 1-8 8H8a8 8 0 0 1-8-8z" fill="#fff" stroke="#9aa5ba" stroke-width="3"/>
+            <path d="M46 0v26h26" fill="#eef1f6" stroke="#9aa5ba" stroke-width="3"/>
+            <g fill="#4660e8"><rect x="30" y="38" width="12" height="8"/><rect x="30" y="52" width="12" height="8"/><rect x="30" y="66" width="12" height="8"/><rect x="30" y="80" width="12" height="14" rx="3"/></g>
+            <text x="36" y="138" text-anchor="middle" class="sv-ts">graphbuilder.zip</text>
+          </g>
+        </svg>
+      </figure>
+      <p>담당자에게 <b>그래프 빌더 실행용 ZIP 파일</b>을 요청해 받습니다. 받은 파일은 내려받기 폴더에 두세요. (연락처는 이 문서 맨 아래 <b>[담당자 이름/연락처]</b>)</p>
+    </div>
+    <div class="card">
+      <h4><span class="n">2</span>압축 풀기</h4>
+      <figure class="noframe">
+        <svg viewBox="0 0 320 190" role="img" aria-label="zip 파일을 압축 풀기 하면 폴더가 되는 그림">
+          <rect x="1" y="1" width="318" height="188" rx="10" class="sv-bg" stroke="#dde2ea" stroke-width="2"/>
+          <g transform="translate(38,34)">
+            <path d="M0 8a8 8 0 0 1 8-8h38l26 26v86a8 8 0 0 1-8 8H8a8 8 0 0 1-8-8z" fill="#fff" stroke="#9aa5ba" stroke-width="3"/>
+            <path d="M46 0v26h26" fill="#eef1f6" stroke="#9aa5ba" stroke-width="3"/>
+            <g fill="#4660e8"><rect x="30" y="38" width="12" height="8"/><rect x="30" y="52" width="12" height="8"/><rect x="30" y="66" width="12" height="8"/><rect x="30" y="80" width="12" height="14" rx="3"/></g>
+            <text x="36" y="138" text-anchor="middle" class="sv-ts">graphbuilder.zip</text>
+          </g>
+          <path d="M138 90H190" class="sv-line" style="stroke:#4660e8;stroke-width:4"/><path d="M190 90l-12-9v18z" fill="#4660e8"/>
+          <text x="164" y="76" text-anchor="middle" class="sv-ts">우클릭</text>
+          <text x="164" y="116" text-anchor="middle" class="sv-ts">모두 압축 풀기</text>
+          <g transform="translate(214,52)">
+            <path d="M0 14a8 8 0 0 1 8-8h26l10 12h46a8 8 0 0 1 8 8v58a8 8 0 0 1-8 8H8a8 8 0 0 1-8-8z" fill="#ffd36b" stroke="#c98a00" stroke-width="3"/>
+            <text x="46" y="108" text-anchor="middle" class="sv-ts">graphbuilder</text>
+          </g>
+        </svg>
+      </figure>
+      <p>내려받은 파일을 <b>우클릭 ▸ 모두 압축 풀기</b>(Mac은 더블클릭) 합니다. <b>반드시 풀어서</b> 나온 폴더 안에서 실행하세요. 압축 파일 안에서 바로 실행하면 안 돼요.</p>
+    </div>
+    <div class="card">
+      <h4><span class="n">3</span>실행 파일 열기</h4>
+      <figure class="noframe">
+        <svg viewBox="0 0 320 190" role="img" aria-label="Windows는 start.bat을 더블클릭, Mac은 start.command를 우클릭해서 열기를 누르는 그림">
+          <rect x="1" y="1" width="318" height="188" rx="10" class="sv-bg" stroke="#dde2ea" stroke-width="2"/>
+          <line x1="160" y1="14" x2="160" y2="176" class="sv-line" style="stroke-width:1.5;stroke-dasharray:5 5"/>
+          <text x="80" y="30" text-anchor="middle" class="sv-tb">Windows</text>
+          <text x="240" y="30" text-anchor="middle" class="sv-tb">Mac</text>
+          <g transform="translate(54,42)">
+            <path d="M0 6a6 6 0 0 1 6-6h24l20 20v50a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6z" fill="#fff" stroke="#9aa5ba" stroke-width="3"/>
+            <rect x="9" y="38" width="32" height="20" rx="3" fill="#24292f"/><text x="25" y="52" text-anchor="middle" style="font:700 11px var(--mono);fill:#7ee0a0">&gt;_</text>
+          </g>
+          <text x="80" y="140" text-anchor="middle" class="sv-m" style="font-size:12.5px">start.bat</text>
+          <g transform="translate(24,150)"><rect width="112" height="28" rx="14" fill="var(--red)"/><text x="56" y="19" text-anchor="middle" class="sv-w" style="font-size:13.5px">더블클릭</text></g>
+          <g transform="translate(182,42)">
+            <path d="M0 6a6 6 0 0 1 6-6h24l20 20v50a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6z" fill="#fff" stroke="#9aa5ba" stroke-width="3"/>
+            <rect x="9" y="38" width="32" height="20" rx="3" fill="#24292f"/><text x="25" y="52" text-anchor="middle" style="font:700 11px var(--mono);fill:#7ee0a0">&gt;_</text>
+          </g>
+          <text x="207" y="140" text-anchor="middle" class="sv-m" style="font-size:11px">start.command</text>
+          <g transform="translate(236,60)"><rect x="-4" y="-6" width="78" height="52" rx="8" fill="#fff" stroke="#c4cad6" stroke-width="2"/><rect x="2" y="0" width="66" height="22" rx="5" fill="var(--red-soft)" stroke="#d92d28" stroke-width="2.5"/><text x="10" y="16" class="sv-tb" style="font-size:13px">열기</text><text x="6" y="38" class="sv-ts" style="font-size:11px">다음으로 열기</text></g>
+          <g transform="translate(172,150)"><rect width="136" height="28" rx="14" fill="var(--red)"/><text x="68" y="19" text-anchor="middle" class="sv-w" style="font-size:13.5px">우클릭 ▸ 열기</text></g>
+        </svg>
+      </figure>
+      <p><b>Windows</b>: 폴더 안의 <code>start.bat</code>을 <b>더블클릭</b>합니다.<br><b>Mac</b>: <code>start.command</code>를 <b>우클릭 ▸ 열기</b>를 클릭합니다.</p>
+    </div>
+    <div class="card">
+      <h4><span class="n">4</span>검은 창이 뜨고, 브라우저가 열려요</h4>
+      <figure class="noframe">
+        <svg viewBox="0 0 320 190" role="img" aria-label="검은 창에 진행 메시지가 나오고 잠시 뒤 브라우저에 그래프 빌더가 자동으로 열리는 그림">
+          <rect x="1" y="1" width="318" height="188" rx="10" class="sv-bg" stroke="#dde2ea" stroke-width="2"/>
+          <g transform="translate(14,16)">
+            <rect width="170" height="150" rx="8" fill="#1d2230"/>
+            <rect width="170" height="20" rx="8" fill="#39415a"/><rect y="10" width="170" height="10" fill="#39415a"/>
+            <circle cx="12" cy="10" r="4" fill="#ff6b62"/><circle cx="26" cy="10" r="4" fill="#ffc247"/><circle cx="40" cy="10" r="4" fill="#3fc558"/>
+            <g style="font:600 10.5px var(--mono)">
+              <text x="10" y="40" fill="#8fd3ff">[*] Node.js v22</text>
+              <text x="10" y="58" fill="#e8ecf5">[*] 의존성 설치 중…</text>
+              <text x="10" y="76" fill="#e8ecf5">[*] Graph Builder 실행</text>
+              <text x="10" y="102" fill="#7ee0a0">➜ Local:</text>
+              <text x="10" y="118" fill="#7ee0a0">  localhost:5173</text>
+              <text x="10" y="140" fill="#aab3c8">종료: Ctrl+C</text>
+            </g>
+          </g>
+          <path d="M194 90H232" class="sv-line" style="stroke:#4660e8;stroke-width:4"/><path d="M232 90l-12-9v18z" fill="#4660e8"/>
+          <g transform="translate(240,52)"><rect width="66" height="76" rx="8" fill="#fff" stroke="#9aa5ba" stroke-width="2.5"/><rect width="66" height="14" rx="8" fill="#eef1f6"/><rect y="8" width="66" height="6" fill="#eef1f6"/>
+            <g stroke="#4660e8" stroke-width="2" fill="#d3dafc"><rect x="12" y="38" width="12" height="20"/><rect x="34" y="28" width="12" height="20" stroke="#e5605c" fill="#fbd3d1"/></g>
+          </g>
+          <text x="273" y="146" text-anchor="middle" class="sv-ts">자동으로 열림</text>
+        </svg>
+      </figure>
+      <p>검은 창에서 준비가 끝나면 <b>브라우저가 저절로 열려</b> 그래프 빌더가 나타납니다. 처음엔 필요한 것을 내려받느라 <b>1~3분</b> 걸려요. 다음부터는 바로 열립니다.</p>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <p><span class="lbl">처음 한 번만 나오는 경고</span></p>
+    <ul>
+      <li><b>Windows</b>: 파란 “Windows의 PC 보호” 창이 뜨면 <b class="ui">추가 정보</b>를 클릭하고 <b class="ui">실행</b>을 클릭합니다.</li>
+      <li><b>Mac</b>: “확인되지 않은 개발자” 경고가 뜨면, <code>start.command</code>를 <b>우클릭 ▸ 열기</b>를 클릭하고 경고창에서 한 번 더 <b class="ui">열기</b>를 클릭합니다. (맥 버전에 따라 <b>시스템 설정 ▸ 개인정보 보호 및 보안</b> 아래쪽의 <b class="ui">그래도 열기</b>를 눌러야 할 수도 있어요.)</li>
+      <li>컴퓨터에 <b>Node.js</b>라는 프로그램이 없으면 자동으로 설치를 시작합니다. Windows는 설치가 끝나면 <b>“창을 닫고 start.bat을 다시 실행하세요”</b>라고 나와요. 그러면 창을 닫고 <code>start.bat</code>을 한 번 더 더블클릭하세요. (Mac은 Homebrew가 없으면 <b>nodejs.org</b>에서 LTS 버전을 설치한 뒤 다시 실행합니다.) 이미 설치돼 있어도 버전이 <b>22.12</b>보다 낮으면 “버전이 너무 낮습니다”라고 알려 주니, <b>nodejs.org</b>에서 LTS 버전(22 또는 24)으로 업데이트한 뒤 다시 실행하세요.</li>
+    </ul>
+  </div>
+  <div class="box tip">
+    <p><span class="lbl">쓰는 동안은</span><b>검은 창을 닫지 마세요.</b> 창을 닫으면 프로그램도 꺼집니다. 거추장스러우면 <b>최소화</b>만 하세요.</p>
+    <p><span class="lbl">끝낼 때는</span>검은 창을 클릭하고 <kbd>Ctrl</kbd>+<kbd>C</kbd>를 누릅니다. Windows에서 “끝내시겠습니까(Y/N)?”라고 물으면 <kbd>Y</kbd>를 입력하고 <kbd>Enter</kbd>를 누르세요. 다음에 쓸 때는 같은 파일을 다시 더블클릭하면 됩니다.</p>
+  </div>
+  <div class="box warn">
+    <p><span class="lbl">새 버전은</span>직접 실행에는 새 버전 알림이 나오지 않아요. 새 버전이 필요하면 담당자에게 새 실행 폴더를 받아 바꿔 쓰세요.</p>
+  </div>
+  <div class="box tip">
+    <p><span class="lbl"><code>start.bat</code>이 바로 꺼질 때</span><code>start.bat</code>을 <b>우클릭 ▸ 관리자 권한으로 실행</b>해 보세요. 압축을 <b>풀지 않고</b> 실행한 것은 아닌지도 확인하세요. Node.js를 방금 설치했다면 창을 닫고 한 번 더 실행하세요. 그래도 안 되면 담당자에게 알려 주세요.</p>
+  </div>
+</section>
+
+<footer class="foot">
+  그래프 빌더 v1.45 · 2026-10-05 기준 사용 설명서<br>
+  설명서의 화면은 이 버전에서 찍었어요. 새 버전에서는 조금 달라 보일 수 있습니다.
+</footer>
+
+</div>
+</body>
+</html>
